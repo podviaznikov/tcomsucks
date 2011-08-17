@@ -14,13 +14,14 @@ function compile(str, path){
         .use(nib());
 };
 
-var items = new Data.Hash({a: 123, b: 34, x: 53});
+//var items = new Data.Hash({a: 123, b: 34, x: 53});
 console.log(items.first())
 var graph = new Data.Graph(schema.app,false);
 
+
 // Connect to a data-store
 graph.connect('couch', {
-  url: "https://podviaznikov:!QAZ2wsx@podviaznikov.cloudant.com/worstcompany"
+  url: "https://ortheryoutaidstimemetrav:yugysM15NsKlJYHhjLr78bjj@podviaznikov.cloudant.com/worstcompany"
 });
 
 graph.set({
@@ -28,6 +29,7 @@ graph.set({
   type: "/type/story",
   name: "Bart Simpson"
 });
+
 
 app.configure(function(){
     //using router
@@ -47,8 +49,8 @@ app.configure(function(){
 app.get('/',function(req,res){
   res.render('index.jade',{layout:false});
 });
-//graph.merge(schema.app,{dirty: true}); // nodes should be considered dirty.
-//graph.sync(function(err) { if (!err) console.log('Successfully synced'); });
+graph.merge(schema.app,{dirty: true}); // nodes should be considered dirty.
+graph.sync(function(err) { if (!err) console.log('Successfully synced'); });
 // Serve Data.js backend along with an express server
 //graph.serve(app);
 console.log(schema.app);
