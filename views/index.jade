@@ -3,7 +3,41 @@ html(lang="en")
   head
     meta(charset="utf-8")
     title WorstCompany
-    link(rel='stylesheet',media='screen',href='styles.css')
+    link(rel='stylesheet',media='screen',href='/styles.css')
+    link(rel='stylesheet',media='screen',href='/proper.css')
+    script(src="/socket.io/socket.io.js")
+    script(src='/static.js')
+    script
+      $(function(){  AppController.init();});
   body
-    p
-      Hello
+    header
+    div#content-container
+      article#intro-page
+        section.people-count-container
+          .people-count
+            - for (var digit in digits)
+              span.digit
+                span= digits[digit]
+          .people-count-label people hates T-Com
+        section.buttons
+          button#read-stories.button Stories
+      article#stories-page.page.hidden
+        header
+          button#new-story-button.button Tell us your story!
+        section#stories-previews
+      article#new-story-page.page.hidden
+        header
+          h1 Write your story!
+        section.content(contenteditable='true')
+          | Start type here to create your story about T-Com
+        aside
+          input#new-story-author(type='text',placeholder='Your name (optional)').input
+          input#new-story-tags(type='text').input
+          button#save-story-button.button Publish
+
+    footer
+    script#story-tpl(type="text/html")
+      <section class="story-preview-text"><%= shortText %></section>
+      <section><%= author %></section>
+      <time datetime="<%= date %>" pubdate><%= pubDate %></time>
+      <footer class="story-preview-toolbar"><a class="button-link" href="/stories/read/<%= _id %>">Read</a></footer>
