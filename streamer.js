@@ -45,7 +45,6 @@ exports.initStreams=function(io,streams){
                 util.log('connected to '+stream.path);
 
                 storyStorage.stream(function(story){
-                    console.log('story loaded',story);
                     socket.emit('added',story);
                 });
             });

@@ -76,8 +76,7 @@ app.get('/',function(req,res){
     }
   });
 });
-
-app.get('/stories',function(req,res){
+app.get('/tcom',function(req,res){
   var digits = '345',
       digitsArray = [],
       i = 0;
@@ -92,7 +91,21 @@ app.get('/stories',function(req,res){
   });
 });
 
-app.get('/stories/:story',function(req,res){
+app.get('/tcom/intro',function(req,res){
+  var digits = '345',
+      digitsArray = [],
+      i = 0;
+  for(;i<digits.length;i++){
+    digitsArray[i] = digits.charAt(i);
+  }
+  res.render('index.jade',{
+    layout:false,
+    locals:{
+      digits:digitsArray
+    }
+  });
+});
+app.get('/tcom/new-story',function(req,res){
   var digits = '345',
       digitsArray = [],
       i = 0;
@@ -107,7 +120,23 @@ app.get('/stories/:story',function(req,res){
   });
 });
 
-app.get('/stories/read/:story',function(req,res){
+
+app.get('/tcom/stories',function(req,res){
+  var digits = '345',
+      digitsArray = [],
+      i = 0;
+  for(;i<digits.length;i++){
+    digitsArray[i] = digits.charAt(i);
+  }
+  res.render('index.jade',{
+    layout:false,
+    locals:{
+      digits:digitsArray
+    }
+  });
+});
+
+app.get('/tcom/stories/:story',function(req,res){
   var digits = '345',
       digitsArray = [],
       i = 0;
@@ -127,7 +156,18 @@ app.post('/api/stories',function(req,res){
   var story=req.body;
   console.log('story to save',story);
   storyStorage.save(story,function(data){
+    res.contentType('json');
     res.send(data);
+  })
+});
+
+app.get('/api/stories/:id',function(req,res){
+  console.log('XXXXXXXXXX');
+  var id=req.params.id;
+  console.log('XXXXXXXXXXXXXXXXXstory to get',id);
+  storyStorage.get(id,function(story){
+    res.contentType('json');
+    res.send(story);
   })
 });
 

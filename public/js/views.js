@@ -6,24 +6,30 @@ $(function(){
         el: 'html',
         pages: $('#content-container article'),
         introPage: $('#intro-page'),
-
-        events:{
-            'click #read-stories'     : 'readStories',
-            'click #new-story-button' : 'createNewStory',
-        },
         initialize:function(){
             _.bindAll(this,'readStories','createNewStory');
             this.storiesPage=new ui.StoriesPage();
             this.newStoryPage=new ui.NewStoryPage();
+            this.storyFullPage=new ui.StoryFullPage();
+        },
+        showIntro:function(){
+            this.$(this.pages).addClass('hidden');
+            this.$(this.introPage).removeClass('hidden');
         },
         readStories:function(){
-            AppController.router.navigate('/stories',false);
             this.$(this.pages).addClass('hidden');
             this.$(this.storiesPage.el).removeClass('hidden');
         },
         createNewStory:function(){
             this.$(this.pages).addClass('hidden');
             this.$(this.newStoryPage.el).removeClass('hidden');
+        },
+        readStory:function(story){
+            console.log('st',story);
+            this.storyFullPage.model=story;
+            this.storyFullPage.render();
+            this.$(this.pages).addClass('hidden');
+            this.$(this.storyFullPage.el).removeClass('hidden');
         }
     });
 
@@ -42,6 +48,7 @@ $(function(){
                 self.editor.activate($(this),{placeholder: 'T-Com is the worst company in the world because ... Start type here to create your story'});
                 self.textCreated=true;
             });
+            this.$(this.author).val(AppController.settings.getUser());
         },
         saveStory:function(){
             if(this.textCreated){
@@ -49,7 +56,7 @@ $(function(){
                     text=this.editor.content(),
                     author=this.$(this.author).val(),
                     tags=this.$(this.tags).val();
-                console.log('text',this.editor.content());
+                AppController.settings.saveUser(author);
                 story.set({
                     text:text,
                     author:author,
@@ -57,7 +64,16 @@ $(function(){
                     date:new Date()
                 });
                 console.log('saving story',story);
-                story.save();
+                story.save({
+                    success:function(model,resp){
+                        console.log('success');
+                        AppController.appView.readStory(model);
+                    },
+                    error:function(model,resp){
+                        console.log('error');
+                        AppController.appView.readStory(model);
+                    }
+                });
             }
             else{
                 alert('empty');
@@ -84,5 +100,20 @@ $(function(){
         tagName: 'article',
         className:'story-preview',
         tplId:'story-tpl'
+    });
+
+    ui.StoryFullPage=Backbone.View.extend({
+        el:$('#story-page'),
+        render:function(){
+            console.log('x',this.model);
+            var html = new ui.StoryContent({model:this.model}).render().el;
+            this.$(this.el).prepend(html);
+            return this;
+        }
+    });
+    ui.StoryContent=Backbone.ModelView.extend({
+        tagName:'section',
+        className:'story-content',
+        tplId:'story-full-view-tpl'
     });
 });

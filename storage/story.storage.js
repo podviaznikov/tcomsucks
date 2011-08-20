@@ -10,13 +10,28 @@ var cradle=require('cradle'),
 exports.save=function(story,callback){
     db.save(story,function(er,doc){
         if(er){
+            console.log('err,call')
             callback({});
         }
         else{
-            callback({_id:doc.id,_rev:doc.rev})
+            console.log('ok,call',doc);
+            callback({_id:doc.id,_rev:doc.rev});
         }
     });
 };
+
+exports.get=function(id,callback){
+    db.get(id,function(er,doc){
+        if(er){
+            console.log('err,call')
+            callback({});
+        }
+        else{
+            callback(doc);
+        }
+    });
+};
+
 
 exports.stream=function(callback){
     db.changes({include_docs: true}).on('response',function(res){

@@ -12,7 +12,7 @@ html(lang="en")
   body
     header
     div#content-container
-      article#intro-page
+      article#intro-page.page
         section.people-count-container
           .people-count
             - for (var digit in digits)
@@ -20,24 +20,50 @@ html(lang="en")
                 span= digits[digit]
           .people-count-label people hates T-Com
         section.buttons
-          button#read-stories.button Stories
+          a#vote-button.button Vote!
+          a(href='/tcom/stories').button Read stories
       article#stories-page.page.hidden
         header
-          button#new-story-button.button Tell us your story!
+          nav
+            ul
+              li
+                a(href="/tcom/intro").nav-link Home
+              li
+                a(href="/tcom/new-story").nav-link Tell us your story!
         section#stories-previews
       article#new-story-page.page.hidden
         header
           h1 Write your story!
+          nav
+            ul
+              li
+                a(href="/tcom/intro").nav-link Home
+              li
+                a(href="/tcom/stories").nav-link Stories
         section.content(contenteditable='true')
           | Start type here to create your story about T-Com
         aside
           input#new-story-author(type='text',placeholder='Your name (optional)').input
           input#new-story-tags(type='text').input
           button#save-story-button.button Publish
-
+      article#story-page.page.hidden
+        section.comments
     footer
     script#story-tpl(type="text/html")
       <section class="story-preview-text"><%= shortText %></section>
       <section><%= author %></section>
       <time datetime="<%= date %>" pubdate><%= pubDate %></time>
-      <footer class="story-preview-toolbar"><a class="button-link" href="/stories/read/<%= _id %>">Read</a></footer>
+      <footer class="story-preview-toolbar"><a class="nav-link" href="/tcom/stories/<%= _id %>">Read</a></footer>
+    script#story-full-view-tpl(type="text/html")
+      <header>
+      <nav>
+      <ul>
+      <li><a href="/tcom/intro" class="nav-link">Home</a></li>
+      <li><a href="/tcom/stories" class="nav-link">Stories</a></li>
+      <li><a href="/tcom/new-story" class="nav-link">Tell us your story!</a></li>
+      </ul>
+      </nav>
+      </header>
+      <section class="story-view-text"><%= text %></section>
+      <section><%= author %></section>
+      <time datetime="<%= date %>" pubdate></time>
