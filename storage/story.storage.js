@@ -32,6 +32,21 @@ exports.get=function(id,callback){
     });
 };
 
+exports.getAll=function(callback){
+    db.view('stories/all',{},function(er,docs){
+        if(er){
+            callback([]);
+        }
+        else{
+            var rows=[];
+            docs.forEach(function(row){
+                rows.push(row);
+            });
+            console.log('retrieved rows:',rows.length);
+            callback(rows);
+        }
+    });
+};
 
 exports.stream=function(callback){
     db.changes({include_docs: true}).on('response',function(res){

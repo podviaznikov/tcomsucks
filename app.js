@@ -6,9 +6,11 @@ var util         = require('util'),
     assetManager = require('connect-assetmanager'),
     _            = require('underscore'),
     app          = express.createServer(),
+    redisStreamer= require('./redis.streamer'),
     streamer     = require('./streamer'),
     socketIo     = require('socket.io'),
-    storiesStream= streamer.defineStream('api/stories'),
+    storiesStream= streamer.defineStream('api/stories','couch'),
+    voteStream   = streamer.defineStream('vote','redis'),
     io           = socketIo.listen(app);
 
 function compile(str, path){
@@ -30,7 +32,7 @@ var assetManagerGroups = {
             'underscore.js',
             'backbone.js',
             'backbone.goodies.view.js',
-            'streaming.collection.js',
+            'streamer.js',
             'proper.js',
             'models.js',
             'views.js',
@@ -63,115 +65,139 @@ app.configure(function(){
 });
 
 app.get('/',function(req,res){
-  var digits = '345',
-      digitsArray = [],
-      i = 0;
-  for(;i<digits.length;i++){
-    digitsArray[i] = digits.charAt(i);
-  }
-  res.render('index.jade',{
-    layout:false,
-    locals:{
-      digits:digitsArray
-    }
-  });
+    redisStreamer.getVotes(function(votes){
+        var digits=votes||'0',
+            digitsArray = [],
+            i = 0;
+        for(;i<digits.length;i++){
+            digitsArray[i] = digits.charAt(i);
+        }
+        res.render('index.jade',{
+            layout:false,
+            locals:{
+                digits:digitsArray
+            }
+        });
+    });
 });
+
 app.get('/tcom',function(req,res){
-  var digits = '345',
-      digitsArray = [],
-      i = 0;
-  for(;i<digits.length;i++){
-    digitsArray[i] = digits.charAt(i);
-  }
-  res.render('index.jade',{
-    layout:false,
-    locals:{
-      digits:digitsArray
-    }
-  });
+    redisStreamer.getVotes(function(votes){
+        var digits=votes||'0',
+            digitsArray = [],
+            i = 0;
+        for(;i<digits.length;i++){
+            digitsArray[i] = digits.charAt(i);
+        }
+        res.render('index.jade',{
+            layout:false,
+            locals:{
+                digits:digitsArray
+            }
+        });
+    });
 });
 
 app.get('/tcom/intro',function(req,res){
-  var digits = '345',
-      digitsArray = [],
-      i = 0;
-  for(;i<digits.length;i++){
-    digitsArray[i] = digits.charAt(i);
-  }
-  res.render('index.jade',{
-    layout:false,
-    locals:{
-      digits:digitsArray
-    }
-  });
+    redisStreamer.getVotes(function(votes){
+        var digits=votes||'0',
+            digitsArray = [],
+            i = 0;
+        for(;i<digits.length;i++){
+            digitsArray[i] = digits.charAt(i);
+        }
+        res.render('index.jade',{
+            layout:false,
+            locals:{
+                digits:digitsArray
+            }
+        });
+    });
 });
 app.get('/tcom/new-story',function(req,res){
-  var digits = '345',
-      digitsArray = [],
-      i = 0;
-  for(;i<digits.length;i++){
-    digitsArray[i] = digits.charAt(i);
-  }
-  res.render('index.jade',{
-    layout:false,
-    locals:{
-      digits:digitsArray
-    }
-  });
+    redisStreamer.getVotes(function(votes){
+        var digits=votes||'0',
+            digitsArray = [],
+            i = 0;
+        for(;i<digits.length;i++){
+            digitsArray[i] = digits.charAt(i);
+        }
+        res.render('index.jade',{
+            layout:false,
+            locals:{
+                digits:digitsArray
+            }
+        });
+    });
 });
 
 
 app.get('/tcom/stories',function(req,res){
-  var digits = '345',
-      digitsArray = [],
-      i = 0;
-  for(;i<digits.length;i++){
-    digitsArray[i] = digits.charAt(i);
-  }
-  res.render('index.jade',{
-    layout:false,
-    locals:{
-      digits:digitsArray
-    }
-  });
+    redisStreamer.getVotes(function(votes){
+        var digits=votes||'0',
+            digitsArray = [],
+            i = 0;
+        for(;i<digits.length;i++){
+            digitsArray[i] = digits.charAt(i);
+        }
+        res.render('index.jade',{
+            layout:false,
+            locals:{
+                digits:digitsArray
+            }
+        });
+    });
 });
 
 app.get('/tcom/stories/:story',function(req,res){
-  var digits = '345',
-      digitsArray = [],
-      i = 0;
-  for(;i<digits.length;i++){
-    digitsArray[i] = digits.charAt(i);
-  }
-  res.render('index.jade',{
-    layout:false,
-    locals:{
-      digits:digitsArray
-    }
-  });
+    redisStreamer.getVotes(function(votes){
+        var digits=votes||'0',
+            digitsArray = [],
+            i = 0;
+        for(;i<digits.length;i++){
+            digitsArray[i] = digits.charAt(i);
+        }
+        res.render('index.jade',{
+            layout:false,
+            locals:{
+                digits:digitsArray
+            }
+        });
+    });
 });
 
 
 app.post('/api/stories',function(req,res){
-  var story=req.body;
-  console.log('story to save',story);
-  storyStorage.save(story,function(data){
-    res.contentType('json');
-    res.send(data);
-  })
+    var story=req.body;
+    console.log('story to save',story);
+    storyStorage.save(story,function(data){
+        console.log('story saved');
+        res.contentType('json');
+        res.send(data);
+    });
+});
+
+app.get('/api/stories',function(req,res){
+    storyStorage.getAll(function(data){
+        res.contentType('json');
+        res.send(data);
+    });
 });
 
 app.get('/api/stories/:id',function(req,res){
-  console.log('XXXXXXXXXX');
-  var id=req.params.id;
-  console.log('XXXXXXXXXXXXXXXXXstory to get',id);
-  storyStorage.get(id,function(story){
-    res.contentType('json');
-    res.send(story);
-  })
+    var id=req.params.id;
+    storyStorage.get(id,function(story){
+        res.contentType('json');
+        res.send(story);
+    });
 });
 
-streamer.initStreams(io,[storiesStream]);
+app.post('/vote',function(req,res){
+    redisStreamer.fireVote();
+    res.end();
+});
+
+streamer.initStreams(io,[storiesStream,voteStream],redisStreamer);
 
 console.log('READY: Server is listening on port 3003');
 app.listen(3003);

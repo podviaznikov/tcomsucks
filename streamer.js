@@ -28,12 +28,13 @@ var Stream=Object.create({},{
         }
     }
 });
-exports.defineStream=function(name){
+exports.defineStream=function(name,type){
     var stream=Object.create(Stream);
     stream.name=name;
+    stream.type=type;
     return stream;
 };
-exports.initStreams=function(io,streams){
+exports.initStreams=function(io,streams,redisStreamer){
     var i=0;
     for(;i<streams.length;i++){
         var stream=streams[i];
@@ -43,10 +44,20 @@ exports.initStreams=function(io,streams){
         (function(stream){
             io.of(stream.path).on('connection',function(socket){
                 util.log('connected to '+stream.path);
+                if('couch'===stream.type){
+//                    storyStorage.getAll(function(stories){
+//                       socket.emit('reset',stories);
+//                    });
 
-                storyStorage.stream(function(story){
-                    socket.emit('added',story);
-                });
+                    storyStorage.stream(function(story){
+                        socket.emit('added',story);
+                    });
+                }
+                else if('redis'===stream.type){
+                    redisStreamer.onVote(function(votes){
+                        socket.emit('updated',{votes:votes});
+                    })
+                }
             });
         })(stream);
     }

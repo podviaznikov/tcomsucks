@@ -32,3 +32,16 @@ Backbone.StreamingCollection=Backbone.Collection.extend({
         });
     }
 });
+
+Backbone.StreamingModel=Backbone.Model.extend({
+
+    //initialize all channels for model
+    initialize:function(){
+        var self=this,
+            channel=io.connect(this.urlRoot);
+        //model should be updated
+        channel.on('updated',function(attributes){
+            self.set({votes:attributes.votes});
+        });
+    }
+});

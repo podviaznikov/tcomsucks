@@ -6,11 +6,23 @@ $(function(){
         el: 'html',
         pages: $('#content-container article'),
         introPage: $('#intro-page'),
+
+        events:{
+            'click #vote-button': 'vote'
+        },
         initialize:function(){
-            _.bindAll(this,'readStories','createNewStory');
+            _.bindAll(this,'readStories','createNewStory','readStory','vote','updateVotesCounter');
+            this.voteCounter=new ui.VoteCounter();
             this.storiesPage=new ui.StoriesPage();
             this.newStoryPage=new ui.NewStoryPage();
             this.storyFullPage=new ui.StoryFullPage();
+
+        },
+        vote:function(){
+            this.voteCounter.vote.save();
+        },
+        updateVotesCounter:function(){
+
         },
         showIntro:function(){
             this.$(this.pages).addClass('hidden');
@@ -25,11 +37,10 @@ $(function(){
             this.$(this.newStoryPage.el).removeClass('hidden');
         },
         readStory:function(story){
-            console.log('st',story);
-            this.storyFullPage.model=story;
-            this.storyFullPage.render();
             this.$(this.pages).addClass('hidden');
             this.$(this.storyFullPage.el).removeClass('hidden');
+            this.storyFullPage.model=story;
+            this.storyFullPage.render();
         }
     });
 
@@ -74,30 +85,56 @@ $(function(){
                         AppController.appView.readStory(model);
                     }
                 });
+                AppController.appView.readStories();
             }
             else{
-                alert('empty');
+                alert('Please write story');
             }
+        }
+    });
+
+    ui.VoteCounter=Backbone.View.extend({
+        el:$('#people-count'),
+        tpl:$('#people-counter-tpl').html(),
+        initialize:function(){
+            _.bindAll(this,'render');
+            this.vote=new models.Vote();
+            this.vote.bind('change',this.render);
+        },
+        render:function(){
+            console.log('should rerender',this.vote);
+            var digits=this.vote.get('votes')||'0',
+                digitsArray = [],
+                i = 0;
+            for(;i<digits.length;i++){
+                digitsArray[i] = digits.charAt(i);
+            }
+            $(this.el).html(_.template(this.tpl,{digits:digitsArray}));
+            return this;
         }
     });
 
     ui.StoriesPage=Backbone.View.extend({
         el:$('#stories-page'),
-        storiesPreviews:$('#stories-previews'),
+        storiesPreviews: $('#stories-previews'),
         initialize:function(){
-            _.bindAll(this,'addStory');
+            _.bindAll(this,'addStory','addStories');
             this.stories=new models.Stories();
             this.stories.bind('add',this.addStory);
+            this.stories.bind('reset',this.addStories);
+            this.stories.fetch();
         },
         addStory:function(story){
-            console.log(story);
             var storyView=new ui.StoryView({model:story});
             this.$(this.storiesPreviews).append(storyView.render().el)
+        },
+        addStories:function(){
+            this.stories.each(this.addStory);
         }
     });
 
     ui.StoryView=Backbone.ModelView.extend({
-        tagName: 'article',
+        tagName:'article',
         className:'story-preview',
         tplId:'story-tpl'
     });

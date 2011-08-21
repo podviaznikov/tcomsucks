@@ -5,7 +5,9 @@ models.Story=Backbone.Model.extend({
     urlRoot:'/api/stories',
     idAttribute:'_id',
     defaults:{
-        author:''
+        author:'',
+        shortText:'',
+        date: new Date().toString()
     },
     initialize:function(attributes){
         if(attributes.date){
@@ -14,10 +16,26 @@ models.Story=Backbone.Model.extend({
             this.set({pubDate:pubDate.toDateString()});
         }
         if(attributes.text){
-            this.set({shortText:attributes.text.substring(0,50)});
+            var lines=attributes.text.split('<br>');
+            if(lines.length===1){
+                this.set({shortText:lines[0].substring(0,50)});
+            }
+            else if(lines.length>1){
+                var threeLines = lines.slice(0,2);
+                this.set({shortText:threeLines.join('<br>').substring(0,50)});
+            }
+            else{
+                this.set({shortText:''});
+            }
+
         }
-    }});
+    }
+});
 models.Stories=Backbone.StreamingCollection.extend({
     model:models.Story,
     url:'/api/stories'
+});
+
+models.Vote=Backbone.StreamingModel.extend({
+  urlRoot:'/vote'
 });

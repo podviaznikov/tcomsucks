@@ -2,26 +2,45 @@
 html(lang="en")
   head
     meta(charset="utf-8")
-    title WorstCompany
+    title T-Com sucks...
+    meta(name="description",content="T-Com Montenegro is really the worst company ever. Help us to change this!")
+    meta(name="keywords",content="t-com sucks,T-Com Montenegro,T-Com Crna Gora,worst company ever,bad service,lame")
     link(rel='stylesheet',media='screen',href='/styles.css')
     link(rel='stylesheet',media='screen',href='/proper.css')
+    link(href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah',rel='stylesheet',type='text/css')
     script(src="/socket.io/socket.io.js")
     script(src='/static.js')
     script
       $(function(){  AppController.init();});
   body
-    header
-    div#content-container
+    #content-container
       article#intro-page.page
-        section.people-count-container
-          .people-count
+        header
+          h1 Hey! We are sick and tired of T-Com's service.
+          h2.cursive If you feel the same&nbsp;&mdash;<br>click this button and become part of our community
+        img(src='/images/arrow-down.png')
+        a#vote-button.button T-Com sucks!
+        section#people-count-container-header
+        section#people-count-container
+          .people-count-label.cursive It's already
+          #people-count
             - for (var digit in digits)
               span.digit
                 span= digits[digit]
-          .people-count-label people hates T-Com
-        section.buttons
-          a#vote-button.button Vote!
-          a(href='/tcom/stories').button Read stories
+          .people-count-label.cursive people with us!
+        section#people-count-container-footer
+        aside#social-box
+           header
+             h1 You can help to spread this in the world
+             h2.pink-cursive Click something here
+             img(src='/images/arrow-up.png')
+           section
+             .g-plusone(data-size="standard",data-count="true")
+             a(href="http://twitter.com/share",data-count="horizontal").twitter-share-button Tweet
+        aside#toolbar-box
+          h1 Want ot read some stories or share yours?
+          a(href='/tcom/stories').pink-cursive It's there
+          img(src='/images/arrow-right.png')
       article#stories-page.page.hidden
         header
           nav
@@ -47,13 +66,19 @@ html(lang="en")
           input#new-story-tags(type='text').input
           button#save-story-button.button Publish
       article#story-page.page.hidden
+        section.social-toolbar
+          .g-plusone(data-size="standard",data-count="true")
+          a(href="http://twitter.com/share",data-count="horizontal").twitter-share-button Tweet
         section.comments
     footer
+      h1 The only reason we do it &mdash; it's to draw attention to this problem in Montenegro
     script#story-tpl(type="text/html")
       <section class="story-preview-text"><%= shortText %></section>
-      <section><%= author %></section>
+      <section class="extra-story-info">
+      <span><%= author %></span>
       <time datetime="<%= date %>" pubdate><%= pubDate %></time>
-      <footer class="story-preview-toolbar"><a class="nav-link" href="/tcom/stories/<%= _id %>">Read</a></footer>
+      </section>
+      <footer class="story-preview-toolbar"><a class="link" href="/tcom/stories/<%= _id %>">Read</a></footer>
     script#story-full-view-tpl(type="text/html")
       <header>
       <nav>
@@ -67,3 +92,12 @@ html(lang="en")
       <section class="story-view-text"><%= text %></section>
       <section><%= author %></section>
       <time datetime="<%= date %>" pubdate></time>
+    script
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    script(src="http://platform.twitter.com/widgets.js")
+    script#people-counter-tpl(type="text/html")
+      <% _.each(digits, function(digit) { %> <span class="digit"><span><%= digit %></span></span> <% }); %>
