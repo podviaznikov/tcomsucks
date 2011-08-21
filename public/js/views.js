@@ -19,7 +19,10 @@ $(function(){
 
         },
         vote:function(){
-            this.voteCounter.vote.save();
+            if(!AppController.settings.isVoted()){
+                this.voteCounter.vote.save();
+                AppController.settings.saveVotedStatus()
+            }
         },
         updateVotesCounter:function(){
 
