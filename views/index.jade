@@ -90,8 +90,10 @@ html(lang="en")
       </nav>
       </header>
       <section class="story-view-text"><%= text %></section>
-      <section><%= author %></section>
+      <aside>
+      <span>Author: <%= author %></span>
       <time datetime="<%= date %>" pubdate></time>
+      </aside>
     script
       (function() {
         var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;

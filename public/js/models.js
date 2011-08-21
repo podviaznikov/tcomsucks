@@ -5,7 +5,7 @@ models.Story=Backbone.Model.extend({
     urlRoot:'/api/stories',
     idAttribute:'_id',
     defaults:{
-        author:'',
+        author:'anonymous',
         shortText:'',
         date: new Date().toString()
     },
