@@ -27,10 +27,10 @@ var AppRouter=Backbone.Router.extend({
         '/intro'               : 'intro',
         '/stories'             : 'stories',
         '/stories/:story'      : 'story',
-        '/new-story'         : 'newStory',
+        '/new-story'           : 'newStory',
     },
     intro:function(){
-        console.log('intor');
+        console.log('intro');
         AppController.appView.showIntro();
     },
     stories:function(){
