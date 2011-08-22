@@ -5,18 +5,14 @@ html(lang="en")
     title T-Com sucks...
     meta(name="description",content="T-Com Montenegro is really the worst company ever. Help us to change this!")
     meta(name="keywords",content="t-com sucks,T-Com Montenegro,T-Com Crna Gora,worst company ever,bad service,lame")
+    meta(name="google-site-verification",content="ROvKcI_3P2bkVDiXx4fePMuyHc7XwUOzpVO6EDpVBb8")
     link(rel='stylesheet',media='screen',href='/styles.css')
     link(rel='stylesheet',media='screen',href='/proper.css')
     link(href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah',rel='stylesheet',type='text/css')
     script(src="/socket.io/socket.io.js")
-    script(src="http://www.google-analytics.com/ga.js")
     script(src='/static.js')
     script
       $(function(){  AppController.init();});
-    script
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-25236340-1']);
-      _gaq.push(['_trackPageview']);
   body
     #content-container
       article#intro-page.page
@@ -109,3 +105,8 @@ html(lang="en")
     script(src="http://platform.twitter.com/widgets.js")
     script#people-counter-tpl(type="text/html")
       <% _.each(digits, function(digit) { %> <span class="digit"><span><%= digit %></span></span> <% }); %>
+    script(src="http://www.google-analytics.com/ga.js")
+    script
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-25236340-1']);
+      _gaq.push(['_trackPageview']);
