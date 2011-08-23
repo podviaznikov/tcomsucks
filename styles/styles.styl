@@ -12,6 +12,12 @@ body
   background: #f4f4f4
   font-family: Arial, sans-serif
 
+::selection
+::-webkit-selection
+::-moz-selection
+  background-color: pink
+  color: white
+
 body > footer
   text-align: center
   color: grey
@@ -118,6 +124,12 @@ span.digit
     & input
     & button
       display:block
+    & input
+      outline: none
+      &:hover
+      &:active
+        outline: none
+        border-color: pink
   & section
     vertical-align: top
     width: 50%

@@ -11,7 +11,7 @@ $(function(){
             'click #vote-button': 'vote'
         },
         initialize:function(){
-            _.bindAll(this,'readStories','createNewStory','readStory','vote','updateVotesCounter');
+            _.bindAll(this,'readStories','createNewStory','readStory','vote');
             this.voteCounter=new ui.VoteCounter();
             this.storiesPage=new ui.StoriesPage();
             this.newStoryPage=new ui.NewStoryPage();
@@ -23,9 +23,6 @@ $(function(){
                 this.voteCounter.vote.save();
                 AppController.settings.saveVotedStatus()
             }
-        },
-        updateVotesCounter:function(){
-
         },
         showIntro:function(){
             this.$(this.pages).addClass('hidden');
@@ -59,7 +56,7 @@ $(function(){
             var self=this;
             this.editor=new Proper();
             $('.content').click(function(){
-                self.editor.activate($(this),{placeholder: 'T-Com is the worst company in the world because ... Start type here to create your story'});
+                self.editor.activate($(this),{placeholder: 'T-Com is the worst company in the world because ... Start type here to create your story'});//controlsTarget: $('#text-editor-tools')
                 self.textCreated=true;
             });
             this.$(this.author).val(AppController.settings.getUser());

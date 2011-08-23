@@ -198,6 +198,5 @@ app.post('/vote',function(req,res){
 
 streamer.initStreams(io,[storiesStream,voteStream],redisStreamer);
 
-console.log('READY: Server is listening on port 3003');
+console.log('READY: Server is listening on port 8082');
 app.listen(8082);
-//exports.app=app;

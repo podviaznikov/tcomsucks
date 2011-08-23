@@ -6,11 +6,12 @@ caption,th,td{text-align:left;font-weight:normal;vertical-align:middle}
 a img{border:none}
 h1{font-weight:normal}
 body{background:#f4f4f4;font-family:Arial,sans-serif}
+::selection,::-webkit-selection,::-moz-selection{background-color:#f07;color:#fff}
 body > footer{text-align:center;color:#808080;font-size:12px}
 #people-count-container-header{background-image:url("images/top.png");width:1024px;height:123px;margin:0 auto}
 #people-count-container-footer{background-image:url("images/bottom.png");width:1024px;height:135px;margin:-60px auto 80px;}
 #people-count-container-footer h1{margin-top:60px;text-align:center;color:#6c6b6b;font-size:12px}
-#content-container{background:#f4f4f4;min-height:550px;width:1024px;margin:40px auto 20px;border-top:6px dotted #f07;border-bottom:6px dotted #f07;text-align:center;position:relative;}
+#content-container{background:#f4f4f4;min-height:550px;width:960px;margin:40px auto 20px;border-top:6px dotted #f07;border-bottom:6px dotted #f07;text-align:center;position:relative;}
 #content-container #people-count-container{margin-top:-56px;z-index:1;}
 #content-container #people-count-container div{display:inline-block;vertical-align:middle}
 #content-container #people-count{margin:0 20px;height:86px}
@@ -30,6 +31,8 @@ span.digit{background-image:url("images/counter.png");width:55px;height:100%;dis
 span.digit span{position:absolute;font-size:46px;font-weight:bold;top:17px;left:15px}
 #new-story-page section,#new-story-page aside{display:inline-block}
 #new-story-page aside input,#new-story-page aside button{display:block}
+#new-story-page aside input{outline:none;}
+#new-story-page aside input:hover,#new-story-page aside input:active{outline:none;border-color:#f07}
 #new-story-page section{vertical-align:top;width:50%;margin-right:10px}
 .content{text-align:left;min-height:100px;border:1px dashed #ccc;}
 .content:hover,.content:active{border-color:#e6e6e6;background:#fff}

@@ -43,5 +43,10 @@ Backbone.StreamingModel=Backbone.Model.extend({
         channel.on('updated',function(attributes){
             self.set({votes:attributes.votes});
         });
+
+        //model should be removed
+        channel.on('removed',function(attributes){
+            self.destroy();
+        });
     }
 });
