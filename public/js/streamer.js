@@ -1,8 +1,9 @@
 /**(c) 2011 Enginimation Studio (http://enginimation.com). May be freely distributed under the MIT license.*/
 /*global Backbone: true, io: true, JSON:true */
 "use strict";
+var Streamer={};
 //streaming backbone collection. Preconditions: socket.io should be included.
-Backbone.StreamingCollection=Backbone.Collection.extend({
+Streamer.Collection=Backbone.Collection.extend({
 
     //initialize all channels for collection
     initialize:function(){
@@ -33,7 +34,7 @@ Backbone.StreamingCollection=Backbone.Collection.extend({
     }
 });
 
-Backbone.StreamingModel=Backbone.Model.extend({
+Streamer.Model=Backbone.Model.extend({
 
     //initialize all channels for model
     initialize:function(){
@@ -41,7 +42,7 @@ Backbone.StreamingModel=Backbone.Model.extend({
             channel=io.connect(this.urlRoot);
         //model should be updated
         channel.on('updated',function(attributes){
-            self.set({votes:attributes.votes});
+            self.set(attributes);
         });
 
         //model should be removed
@@ -49,4 +50,9 @@ Backbone.StreamingModel=Backbone.Model.extend({
             self.destroy();
         });
     }
+});
+
+//counter model
+Streamer.CounterModel=Streamer.Model.extend({
+
 });

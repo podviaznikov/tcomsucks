@@ -27,15 +27,14 @@ models.Story=Backbone.Model.extend({
             else{
                 this.set({shortText:''});
             }
-
         }
     }
 });
-models.Stories=Backbone.StreamingCollection.extend({
+models.Stories=Streamer.Collection.extend({
     model:models.Story,
     url:'/api/stories'
 });
 
-models.Vote=Backbone.StreamingModel.extend({
+models.Vote=Streamer.Model.extend({
   urlRoot:'/vote'
 });
