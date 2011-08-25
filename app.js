@@ -39,10 +39,11 @@ var assetManagerGroups = {
         ]
     }
 };
-var assetsManagerMiddleware = assetManager(assetManagerGroups);
+var assetsManagerMiddleware=assetManager(assetManagerGroups);
 
 
 app.configure(function(){
+   app.use(express.favicon(__dirname+'/public/favicon.ico'));
     //request body parser
     app.use(express.bodyParser());
     //using router
