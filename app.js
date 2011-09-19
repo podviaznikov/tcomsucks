@@ -20,26 +20,26 @@ function compile(str, path){
         .use(nib());
 };
 
-var assetManagerGroups = {
-    'js': {
-        'route': /\/static.js/
-        , 'path': './public/js/'
-        , 'dataType': 'javascript'
-        , 'files': [
-            'jquery-1.6.2.min.js',
-            'jquery.hotkeys.js',
-            'underscore.js',
-            'backbone.js',
-            'backbone.goodies.view.js',
-            'streamer.js',
-            'proper.js',
-            'models.js',
-            'views.js',
-            'controller.js'
-        ]
-    }
-};
-var assetsManagerMiddleware=assetManager(assetManagerGroups);
+//var assetManagerGroups = {
+//    'js': {
+//        'route': /\/static.js/
+//        , 'path': './public/js/'
+//        , 'dataType': 'javascript'
+//        , 'files': [
+//            'jquery-1.6.2.min.js',
+//            'jquery.hotkeys.js',
+//            'underscore.js',
+//            'backbone.js',
+//            'backbone.goodies.view.js',
+//            'streamer.js',
+//            'proper.js',
+//            'models.js',
+//            'views.js',
+//            'controller.js'
+//        ]
+//    }
+//};
+//var assetsManagerMiddleware=assetManager(assetManagerGroups);
 
 app.configure('production',function(){
   app.set('view cache',true);
@@ -66,7 +66,7 @@ app.configure(function(){
     //public folder for static files
 	app.use(express.static(__dirname + '/public'));
     //asset manager
-	app.use(assetsManagerMiddleware);
+	//app.use(assetsManagerMiddleware);
 });
 
 var pageRenderer=function(req,res){
