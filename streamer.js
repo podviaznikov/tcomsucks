@@ -50,7 +50,9 @@ exports.initStreams=function(io,streams,redisStreamer){
 //                    });
 
                     storyStorage.stream(function(story){
+                      if('_design/stories' !== story._id){
                         socket.emit('added',story);
+                      }
                     });
                 }
                 else if('redis'===stream.type){

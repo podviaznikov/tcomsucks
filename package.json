@@ -1,0 +1,17 @@
+{
+  "author": "Enginimation Studio <hello@enginimation.com> (http://enginimation.com)",
+  "name": "tcomsucks",
+  "description": "Demo node.js application dedicated to the worst company ever - T-Com Montenegro",
+  "version": "0.5.0",
+  "homepage": "http://tcomsucks.me",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/podviaznikov/tcomsucks.git"
+  },
+  "main": "./app.js",
+  "engines": {
+    "node": "~v0.4.9"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

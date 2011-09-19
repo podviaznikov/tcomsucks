@@ -1,11 +1,11 @@
 var cradle=require('cradle'),
     connection=new(cradle.Connection)('podviaznikov.cloudant.com', 80,{
         auth:{
-            username:"thurightshiminguensedgen",
-            password:"q0efA00sSJMbg4XRciHWgfJN"
+            username:"wendessitteregestandstri",
+            password:"1sUYTtGeE0YGpMFbjRuvbQss"
         }
     }),
-    db = connection.database("worstcompany");
+    db = connection.database("tcomsucks");
 
 exports.save=function(story,callback){
     db.save(story,function(er,doc){

@@ -41,8 +41,12 @@ var assetManagerGroups = {
 };
 var assetsManagerMiddleware=assetManager(assetManagerGroups);
 
+app.configure('production',function(){
+  app.set('view cache',true);
+});
 
 app.configure(function(){
+
    app.use(express.favicon(__dirname+'/public/favicon.ico'));
     //request body parser
     app.use(express.bodyParser());
@@ -52,6 +56,7 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/public'));
     // folder with templates
     app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
     // stylus
     app.use(stylus.middleware({
         src: __dirname+'/styles',
@@ -64,7 +69,7 @@ app.configure(function(){
 	app.use(assetsManagerMiddleware);
 });
 
-app.get('/',function(req,res){
+var pageRenderer=function(req,res){
     redisStreamer.getVotes(function(votes){
         var digits=votes||'0',
             digitsArray = [],
@@ -72,99 +77,22 @@ app.get('/',function(req,res){
         for(;i<digits.length;i++){
             digitsArray[i] = digits.charAt(i);
         }
-        res.render('index.jade',{
+        res.render('index',{
             layout:false,
             locals:{
                 digits:digitsArray
             }
         });
     });
-});
+};
+app.get('/',pageRenderer);
 
-app.get('/tcom',function(req,res){
-    redisStreamer.getVotes(function(votes){
-        var digits=votes||'0',
-            digitsArray = [],
-            i = 0;
-        for(;i<digits.length;i++){
-            digitsArray[i] = digits.charAt(i);
-        }
-        res.render('index.jade',{
-            layout:false,
-            locals:{
-                digits:digitsArray
-            }
-        });
-    });
-});
+app.get('/tcom',pageRenderer);
+app.get('/tcom/intro',pageRenderer);
+app.get('/tcom/new-story',pageRenderer);
+app.get('/tcom/stories',pageRenderer);
 
-app.get('/tcom/intro',function(req,res){
-    redisStreamer.getVotes(function(votes){
-        var digits=votes||'0',
-            digitsArray = [],
-            i = 0;
-        for(;i<digits.length;i++){
-            digitsArray[i] = digits.charAt(i);
-        }
-        res.render('index.jade',{
-            layout:false,
-            locals:{
-                digits:digitsArray
-            }
-        });
-    });
-});
-app.get('/tcom/new-story',function(req,res){
-    redisStreamer.getVotes(function(votes){
-        var digits=votes||'0',
-            digitsArray = [],
-            i = 0;
-        for(;i<digits.length;i++){
-            digitsArray[i] = digits.charAt(i);
-        }
-        res.render('index.jade',{
-            layout:false,
-            locals:{
-                digits:digitsArray
-            }
-        });
-    });
-});
-
-
-app.get('/tcom/stories',function(req,res){
-    redisStreamer.getVotes(function(votes){
-        var digits=votes||'0',
-            digitsArray = [],
-            i = 0;
-        for(;i<digits.length;i++){
-            digitsArray[i] = digits.charAt(i);
-        }
-        res.render('index.jade',{
-            layout:false,
-            locals:{
-                digits:digitsArray
-            }
-        });
-    });
-});
-
-app.get('/tcom/stories/:story',function(req,res){
-    redisStreamer.getVotes(function(votes){
-        var digits=votes||'0',
-            digitsArray = [],
-            i = 0;
-        for(;i<digits.length;i++){
-            digitsArray[i] = digits.charAt(i);
-        }
-        res.render('index.jade',{
-            layout:false,
-            locals:{
-                digits:digitsArray
-            }
-        });
-    });
-});
+app.get('/tcom/stories/:story',pageRenderer);
 
 
 app.post('/api/stories',function(req,res){
@@ -172,23 +100,20 @@ app.post('/api/stories',function(req,res){
     console.log('story to save',story);
     storyStorage.save(story,function(data){
         console.log('story saved');
-        res.contentType('json');
-        res.send(data);
+        res.json(data);
     });
 });
 
 app.get('/api/stories',function(req,res){
     storyStorage.getAll(function(data){
-        res.contentType('json');
-        res.send(data);
+        res.json(data);
     });
 });
 
 app.get('/api/stories/:id',function(req,res){
     var id=req.params.id;
     storyStorage.get(id,function(story){
-        res.contentType('json');
-        res.send(story);
+        res.json(story);
     });
 });
 
@@ -201,3 +126,4 @@ streamer.initStreams(io,[storiesStream,voteStream],redisStreamer);
 
 console.log('READY: Server is listening on port 8082');
 app.listen(8082);
+//exports.app = app;
