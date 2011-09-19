@@ -91,9 +91,7 @@ app.get('/tcom',pageRenderer);
 app.get('/tcom/intro',pageRenderer);
 app.get('/tcom/new-story',pageRenderer);
 app.get('/tcom/stories',pageRenderer);
-
 app.get('/tcom/stories/:story',pageRenderer);
-
 
 app.post('/api/stories',function(req,res){
     var story=req.body;
@@ -103,8 +101,8 @@ app.post('/api/stories',function(req,res){
         res.json(data);
     });
 });
-
 app.get('/api/stories',function(req,res){
+    console.log('getting all stories');
     storyStorage.getAll(function(data){
         res.json(data);
     });
@@ -123,6 +121,11 @@ app.post('/vote',function(req,res){
 });
 
 streamer.initStreams(io,[storiesStream,voteStream],redisStreamer);
+
+//catch all errors
+process.on('uncaughtException',function(err){
+  console.log(err);
+});
 
 console.log('READY: Server is listening on port 8082');
 app.listen(8082);
