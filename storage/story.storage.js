@@ -1,5 +1,5 @@
 var cradle=require('cradle'),
-    connection=new(cradle.Connection)('podviaznikov.cloudant.com', 80,{
+    connection=new(cradle.Connection)('db.tcomsucks.me', 80,{
         auth:{
             username:"wendessitteregestandstri",
             password:"1sUYTtGeE0YGpMFbjRuvbQss"
