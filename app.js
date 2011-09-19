@@ -87,11 +87,16 @@ var pageRenderer=function(req,res){
 };
 app.get('/',pageRenderer);
 
-app.get('/tcom',pageRenderer);
-app.get('/tcom/intro',pageRenderer);
-app.get('/tcom/new-story',pageRenderer);
-app.get('/tcom/stories',pageRenderer);
-app.get('/tcom/stories/:story',pageRenderer);
+//app.get('/tcom',pageRenderer);
+//app.get('/tcom/intro',pageRenderer);
+//app.get('/tcom/new-story',pageRenderer);
+//app.get('/tcom/stories',pageRenderer);
+//app.get('/tcom/stories/:story',pageRenderer);
+
+app.get('/intro',pageRenderer);
+app.get('/new-story',pageRenderer);
+app.get('/stories',pageRenderer);
+app.get('/stories/:story',pageRenderer);
 
 app.post('/api/stories',function(req,res){
     var story=req.body;
@@ -129,3 +134,4 @@ process.on('uncaughtException',function(err){
 
 console.log('READY: Server is listening on port 8082');
 exports.app = app;
+app.listen(8082);

@@ -57,7 +57,7 @@ a.nav-link:before{content:"::";position:relative;top:-1.5px;left:-2px}
 .button:before{color:rgba(0,0,0,0.50);position:relative;left:-13px;top:2px;line-height:10px;font-family:"IconicStroke";font-size:18px;font-weight:normal}
 .cursive{font-family:"Gloria Hallelujah",cursive;font-size:18px}
 .pink-cursive{font-family:"Gloria Hallelujah",cursive;font-size:18px;color:#f07}
-.story-content > section,.story-content > aside{display:inline-block}
-.story-content > aside{margin-left:20px}
+#story-content > section,#story-content > aside{display:inline-block}
+#story-content > aside{margin-left:20px}
 .story-view-text{padding:10px;min-height:200px;text-align:left;width:60%;border:1px dashed #ccc;margin-bottom:20px}
 .hidden{display:none !important}

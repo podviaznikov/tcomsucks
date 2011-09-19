@@ -4,9 +4,9 @@ JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 JS_TESTER = ./node_modules/vows/bin/vows
 
 all: \
-	app.js
+	static.js
 
-app.js: \
+static.js: \
    public/js/jquery-1.6.2.min.js \
    public/js/jquery.hotkeys.js \
    public/js/underscore.js \
@@ -25,10 +25,10 @@ test: all
 	@rm -f $@
 	$(JS_COMPILER) < $< > $@
 
-app.js app%.js: Makefile
+static.js static%.js: Makefile
 	@rm -f $@
 	cat $(filter %.js,$^) > $@
 	@chmod a-w $@
 
 clean:
-	rm -f app.js
+	rm -f static.js

@@ -4,7 +4,7 @@ var AppController={
     init: function(){
         this.appView=new ui.AppView();
         this.router=new AppRouter();
-        Backbone.history.start({pushState: true,root: '/tcom'});
+        Backbone.history.start({pushState: true});
         return this;
     },
     settings:{
@@ -24,10 +24,14 @@ var AppController={
 };
 var AppRouter=Backbone.Router.extend({
     routes:{
-        '/intro'               : 'intro',
-        '/stories'             : 'stories',
-        '/stories/:story'      : 'story',
-        '/new-story'           : 'newStory',
+        '/'                   : 'intro',
+        'intro'               : 'intro',
+        'stories'             : 'stories',
+        'stories/:story'      : 'story',
+        'new-story'           : 'newStory',
+    },
+    goto:function(path){
+      this.navigate(path,true);
     },
     intro:function(){
         console.log('intro');

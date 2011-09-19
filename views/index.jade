@@ -10,7 +10,7 @@ html(lang="en")
     link(rel='stylesheet',media='screen',href='/styles.css')
     link(rel='stylesheet',media='screen',href='/proper.css')
     script(src="/socket.io/socket.io.js")
-    script(src='/app.js')
+    script(src='/static.js')
     script
       $(function(){  AppController.init();});
   body
@@ -41,7 +41,7 @@ html(lang="en")
              a(href="http://twitter.com/share",data-count="horizontal").twitter-share-button Tweet
         aside#toolbar-box
           h1 Want to read some stories or share yours?
-          a(href='/tcom/stories').pink-cursive It's there
+          a(href='/stories').pink-cursive.nav-link It's there
           img(src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAANCAYAAAAuYadYAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHowAACAmAAA+f8AAIDmAABSCAABFVgAADqXAAAXb2Uu03wAAAGcSURBVHjaxNS9a1RBFAXw3yTrorIGSVT8QIkIgppCFFtJJyhYWqSz8E+wW7AwrY2FRfoINnYiFkEtFERELBRDLARFUcm6EYnGdTMW3gePZwxCduOBB3fefNwz5945Keesp0iTCbtxFj/wCu/wEV+Q5eaqR9T0HoM4hyvo4jNe4wme4r00+R3L+Ip5fIg4y02pD0rBXlzAaexDIwQYCDIZP/EJz3AXj/AS7bWR+k2gULyGOjZhK7Zhf5DaHvFYzMFilHQzRkLVW7iUsssNHMdGpNiQS3ExVpkvxglbMIRh7MFBjAaBRmldir2DJeXKebqYqOEw7q2xaIv4Ft88ZnEdb6JfOpWL1HEgco/iSFzqJh7U8ALjqyi1Un1T5X8nXloHS1hAO0guldZuwA4cw4nIm0KUaTxGq/eN/me/CWV24RDO4FTYxAwehm28lZvdfllCFcM4Gb51NBSdxm3MharL/fapAgPYGZ51PnzoBu4HmZbczOtlngWGMIGLuIMpPEf7b2TWg1Q9rOJqvKrZapn+B6kWrkUPLfwrIfg1ADl2ej0n2AiIAAAAAElFTkSuQmCC')
       article#stories-page.page.hidden
         header
@@ -50,7 +50,7 @@ html(lang="en")
               li
                 a(href="/").nav-link Home
               li
-                a(href="/tcom/new-story").nav-link Tell us your story!
+                a(href="/new-story").nav-link Tell us your story!
         section#stories-previews
       article#new-story-page.page.hidden
         header
@@ -60,7 +60,7 @@ html(lang="en")
               li
                 a(href="/").nav-link Home
               li
-                a(href="/tcom/stories").nav-link Stories
+                a(href="/stories").nav-link Stories
         section.content(contenteditable='true')
           | Start type here to create your story about T-Com
         aside#text-editor-tools
@@ -69,6 +69,16 @@ html(lang="en")
           input#new-story-tags(type='text',placeholder='Put tags for the story').input
           button#save-story-button.button Publish
       article#story-page.page.hidden
+        header
+         nav
+           ul
+             li
+               a(href="/").nav-link Home
+             li
+               a(href="/stories").nav-link Stories
+             li
+               a(href="/new-story").nav-link. Tell us your story!
+        section#story-content
         section.social-toolbar
           .g-plusone(data-size="standard",data-count="true")
           a(href="http://twitter.com/share",data-count="horizontal").twitter-share-button Tweet
@@ -81,17 +91,8 @@ html(lang="en")
       <span><%= author %></span>
       <time datetime="<%= date %>" pubdate><%= pubDate %></time>
       </section>
-      <footer class="story-preview-toolbar"><a class="link" href="/tcom/stories/<%= _id %>">Read</a></footer>
-    script#story-full-view-tpl(type="text/html")
-      <header>
-      <nav>
-      <ul>
-      <li><a href="/" class="nav-link">Home</a></li>
-      <li><a href="/tcom/stories" class="nav-link">Stories</a></li>
-      <li><a href="/tcom/new-story" class="nav-link">Tell us your story!</a></li>
-      </ul>
-      </nav>
-      </header>
+      <footer class="story-preview-toolbar"><a class="link nav-link" href="/stories/<%= _id %>">Read</a></footer>
+    script#story-full-view-tpl(type="text/template")
       <section class="story-view-text"><%= text %></section>
       <aside>
       <span>Author: <%= author %></span>

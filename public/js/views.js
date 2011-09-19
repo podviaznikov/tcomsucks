@@ -8,15 +8,21 @@ $(function(){
         introPage: $('#intro-page'),
 
         events:{
-            'click #vote-button': 'vote'
+            'click #vote-button': 'vote',
+            'click a.nav-link': 'clickLink'
         },
         initialize:function(){
-            _.bindAll(this,'readStories','createNewStory','readStory','vote');
+            _.bindAll(this,'readStories','createNewStory','readStory','vote','clickLink');
             this.voteCounter=new ui.VoteCounter();
             this.storiesPage=new ui.StoriesPage();
             this.newStoryPage=new ui.NewStoryPage();
             this.storyFullPage=new ui.StoryFullPage();
-
+        },
+        clickLink: function(e){
+          e.preventDefault();
+          var link=$(e.target).attr("href").substring(1)||"/";
+          console.log(e,link);
+          AppController.router.goto(link);
         },
         vote:function(){
             if(!AppController.settings.isVoted()){
@@ -74,7 +80,6 @@ $(function(){
                     tags:tags,
                     date:new Date()
                 });
-                console.log('saving story',story);
                 story.save({
                     success:function(model,resp){
                         console.log('success');
@@ -141,16 +146,19 @@ $(function(){
 
     ui.StoryFullPage=Backbone.View.extend({
         el:$('#story-page'),
+        header:$("#story-page header"),
+        initialize:function(){
+            this.contentView=new ui.StoryContent();
+        },
         render:function(){
-            console.log('x',this.model);
-            var html = new ui.StoryContent({model:this.model}).render().el;
-            this.$(this.el).prepend(html);
+            this.contentView.model=this.model;
+            $(this.contentView.el).empty();
+            this.contentView.render();
             return this;
         }
     });
     ui.StoryContent=Backbone.ModelView.extend({
-        tagName:'section',
-        className:'story-content',
+        el:$('#story-content'),
         tplId:'story-full-view-tpl'
     });
 });
