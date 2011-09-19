@@ -128,5 +128,4 @@ process.on('uncaughtException',function(err){
 });
 
 console.log('READY: Server is listening on port 8082');
-app.listen(8082);
-//exports.app = app;
+exports.app = app;
