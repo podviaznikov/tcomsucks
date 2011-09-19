@@ -49,11 +49,11 @@ exports.initStreams=function(io,streams,redisStreamer){
 //                       socket.emit('reset',stories);
 //                    });
 
-                    storyStorage.stream(function(story){
-                      if('_design/stories' !== story._id){
-                        socket.emit('added',story);
-                      }
-                    });
+//                    storyStorage.stream(function(story){
+//                      if('_design/stories' !== story._id){
+//                        socket.emit('added',story);
+//                      }
+//                    });
                 }
                 else if('redis'===stream.type){
                     redisStreamer.onVote(function(votes){
