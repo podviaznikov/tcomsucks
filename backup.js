@@ -1,7 +1,8 @@
-var util = require('util');
+var util=require('util'),
+    storyStorage=require('./storage/story.storage');
 
-exports.initStreams=function(io, streams, redisStreamer){
-    var i = 0;
+exports.initStreams=function(io,streams,redisStreamer){
+    var i=0;
     for(;i<streams.length;i++){
         var stream=streams[i];
 
@@ -16,7 +17,18 @@ exports.initStreams=function(io, streams, redisStreamer){
                   redisStreamer.fireVote();
                 });
                 util.log('connected to '+stream.path);
-                if('redis'===stream.type){
+                if('couch'===stream.type){
+//                    storyStorage.getAll(function(stories){
+//                       socket.emit('reset',stories);
+//                    });
+
+//                    storyStorage.stream(function(story){
+//                      if('_design/stories' !== story._id){
+//                        socket.emit('added',story);
+//                      }
+//                    });
+                }
+                else if('redis'===stream.type){
                     redisStreamer.onVote(function(votes){
                         socket.emit('updated',{votes:votes});
                     })

@@ -27,7 +27,7 @@ $(function(){
         vote:function(){
             if(!AppController.settings.isVoted()){
                 this.voteCounter.vote.save();
-                AppController.settings.saveVotedStatus()
+                //AppController.settings.saveVotedStatus()
             }
         },
         showIntro:function(){
@@ -108,7 +108,7 @@ $(function(){
         },
         render:function(){
             console.log('should rerender',this.vote);
-            var digits=this.vote.get('votes')||'0',
+            var digits=this.vote.get('counter')||'0',
                 digitsArray = [],
                 i = 0;
             for(;i<digits.length;i++){

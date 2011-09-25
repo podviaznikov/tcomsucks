@@ -6,10 +6,11 @@ var util         = require('util'),
     assetManager = require('connect-assetmanager'),
     app          = express.createServer(),
     redisStreamer= require('./redis.streamer'),
-    streamer     = require('./streamer'),
+    streamer     = require('./streamer/streamer'),
+    counterStream     = require('./streamer/ext/counter.stream'),
     socketIo     = require('socket.io'),
-    storiesStream= streamer.defineStream('api/stories','couch'),
-    voteStream   = streamer.defineStream('vote','redis'),
+    //storiesStream= streamer.defineStream('stories','couch'),
+    voteStream   = counterStream.defineCounterStream('votes','redis'),
     io           = socketIo.listen(app);
 
 function compile(str, path){
@@ -20,26 +21,26 @@ function compile(str, path){
         .use(nib());
 };
 
-//var assetManagerGroups = {
-//    'js': {
-//        'route': /\/static.js/
-//        , 'path': './public/js/'
-//        , 'dataType': 'javascript'
-//        , 'files': [
-//            'jquery-1.6.2.min.js',
-//            'jquery.hotkeys.js',
-//            'underscore.js',
-//            'backbone.js',
-//            'backbone.goodies.view.js',
-//            'streamer.js',
-//            'proper.js',
-//            'models.js',
-//            'views.js',
-//            'controller.js'
-//        ]
-//    }
-//};
-//var assetsManagerMiddleware=assetManager(assetManagerGroups);
+var assetManagerGroups = {
+    'js': {
+        'route': /\/static.js/
+        , 'path': './public/js/'
+        , 'dataType': 'javascript'
+        , 'files': [
+            'jquery-1.6.2.min.js',
+            'jquery.hotkeys.js',
+            'underscore.js',
+            'backbone.js',
+            'backbone.goodies.view.js',
+            'streamer.js',
+            'proper.js',
+            'models.js',
+            'views.js',
+            'controller.js'
+        ]
+    }
+};
+var assetsManagerMiddleware=assetManager(assetManagerGroups);
 
 app.configure('production',function(){
   app.set('view cache',true);
@@ -66,7 +67,7 @@ app.configure(function(){
     //public folder for static files
 	app.use(express.static(__dirname + '/public'));
     //asset manager
-	//app.use(assetsManagerMiddleware);
+	app.use(assetsManagerMiddleware);
 });
 
 var pageRenderer=function(req,res){
@@ -120,12 +121,7 @@ app.get('/api/stories/:id',function(req,res){
     });
 });
 
-app.post('/vote',function(req,res){
-    redisStreamer.fireVote();
-    res.end();
-});
-
-streamer.initStreams(io,[storiesStream,voteStream],redisStreamer);
+streamer.initStreams(io, [voteStream]);
 
 //catch all errors
 process.on('uncaughtException',function(err){

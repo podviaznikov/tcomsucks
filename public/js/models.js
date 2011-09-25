@@ -32,9 +32,9 @@ models.Story=Backbone.Model.extend({
 });
 models.Stories=Streamer.Collection.extend({
     model:models.Story,
-    url:'/api/stories'
+    url:'/stories'
 });
 
-models.Vote=Streamer.Model.extend({
-  urlRoot:'/vote'
+models.Vote=Streamer.CounterModel.extend({
+  urlRoot:'/votes'
 });

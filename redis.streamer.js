@@ -1,9 +1,8 @@
-var util=require('util'),
-    redis=require('redis'),
+var redis=require('redis'),
     store=redis.createClient(),
     sub=redis.createClient(),
     pub=redis.createClient(),
-    channel='vote';
+    channel='votes';
 
 sub.subscribe(channel);
 
